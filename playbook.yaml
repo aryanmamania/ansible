@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: true
+  Tasks:
+    - name: install apache2
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+        update_cache: true
+    - name: copy files
+      ansible.builtin.copy:
+        scr: index.html
+        dest: /var/www/html
+        owner: root
+        group: root
+        mode: '0667'
+    - name: start service
+      ansible.builtin.server:
+        name: apache2
+        state: present
+        enabled: true

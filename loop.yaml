@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true 
+  tasks:  
+    - name: Check if my packages are installed
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - openssh
+        - openssl
+      ignore_errors: yes
+    - name: check if docker is installed
+      ansible.builtin.command:  docker --version 
+      register: output
+      ignore_errors: yes
+    - name: install docker if not installed
+      ansible.builtin.apt:
+          name: docker.io
+          state: present
+      when:
+        output.failed
