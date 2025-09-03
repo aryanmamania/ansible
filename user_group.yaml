@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: check if group exists
+      ansible.builtin.getent:
+        database: group
+        key: developers
+      register: output
+      ignore_errors: true
+    - name: Create User
+      ansible.builtin.user:
+        name: "{{item}}"
+        group: developers
+        shell: /bin/bash
+        state: present
+      loop:
+        - aryanmamania
+        - mamania
+        - aryan02
+      when: output.found is defined and output.found 
+          

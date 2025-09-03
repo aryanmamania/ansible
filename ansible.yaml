@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Check if apache is installed
+      ansible.builtin.command: apache2 --version
+      register: output
+      ignore_errors: yes
+    - name: Install ansible 
+      ansible.builtin.apt:
+         name: apache2
+         state: present
+      when:
+        output.failed
+      notify: Enable apache
+    - name: Enable Apache
+      ansible.builtin.service:
+        name: apache2
+        enabled: yes
+
