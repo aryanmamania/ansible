@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  tasks:  
+    - name: Check if /etc/motd exists
+      ansible.builtin.stat:
+        path: /etc/motd
+      register: output
+    - name: Replace content of file 
+      ansible.builtin.copy:
+        dest: /etc/motd
+        content: "welcome"
