@@ -1,0 +1,12 @@
+---
+- name: Run "top" command in batch mode on all hosts
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Execute "top" for a single snapshot
+      shell: top -b -n 1
+      register: top_output
+
+    - name: Show top command output
+      debug:
+        var: top_output.stdout
